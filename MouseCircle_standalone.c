@@ -121,7 +121,7 @@ static int Init(void)
     }
 
     // Create window
-    g_Window = SDL_CreateWindow("MouseCircle", 640, 480, 0);
+    g_Window = SDL_CreateWindow("MouseCircle", 640, 480, SDL_WINDOW_RESIZABLE);
     if (g_Window == NULL)
     {
         SDL_Log("CreateWindow failed: %s", SDL_GetError());

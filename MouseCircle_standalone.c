@@ -326,6 +326,8 @@ int main(int argc, char** argv)
                 if (evt.key.key == SDLK_ESCAPE)
                 {
                     quit = true;
+                } else if (evt.key.key == SDLK_Q) {
+                    quit = true;
                 }
             }
         }

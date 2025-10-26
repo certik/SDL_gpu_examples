@@ -1,0 +1,36 @@
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct Uniforms {
+    float2 mouse_pos;
+    float2 resolution;
+};
+
+struct VertexOutput {
+    float4 position [[position]];
+    float2 uv [[user(locn0)]];
+};
+
+fragment float4 main0(
+    VertexOutput input [[stage_in]],
+    constant Uniforms& uniforms [[buffer(0)]]
+) {
+    // Convert UV to screen coordinates
+    float2 screen_pos = input.uv * uniforms.resolution;
+
+    // Calculate distance from mouse position
+    float dist = length(screen_pos - uniforms.mouse_pos);
+
+    // Draw a circle with radius 50 pixels
+    float circle_radius = 50.0;
+    float4 circle_color = float4(1.0, 0.0, 0.0, 1.0); // Red
+    float4 bg_color = float4(0.0, 1.0, 0.0, 1.0); // Green
+
+    // Smooth circle edge
+    float edge_smoothness = 2.0;
+    float t = smoothstep(circle_radius + edge_smoothness, circle_radius - edge_smoothness, dist);
+
+    return mix(bg_color, circle_color, t);
+}

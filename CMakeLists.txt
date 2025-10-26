@@ -39,6 +39,7 @@ add_executable(SDL_gpu_examples
     Examples/PullSpriteBatch.c
     Examples/TextureTypeTest.c
     Examples/CompressedTextures.c
+    Examples/MouseCircle.c
 )
 
 target_link_libraries(SDL_gpu_examples

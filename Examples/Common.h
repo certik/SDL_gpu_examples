@@ -123,5 +123,6 @@ extern Example DepthSampler_Example;
 extern Example PullSpriteBatch_Example;
 extern Example TextureTypeTest_Example;
 extern Example CompressedTextures_Example;
+extern Example MouseCircle_Example;
 
 #endif

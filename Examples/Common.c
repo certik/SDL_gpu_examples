@@ -9,10 +9,25 @@
 
 int CommonInit(Context* context, SDL_WindowFlags windowFlags)
 {
+#ifdef _WIN32
+	// On Windows, use D3D12 backend with DXIL shaders
 	context->Device = SDL_CreateGPUDevice(
-		SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_MSL,
+		SDL_GPU_SHADERFORMAT_DXIL,
 		true,
-		NULL);
+		"direct3d12");
+#elif defined(__APPLE__)
+	// On macOS, use Metal backend with MSL shaders
+	context->Device = SDL_CreateGPUDevice(
+		SDL_GPU_SHADERFORMAT_MSL,
+		true,
+		"metal");
+#else
+	// On Linux, use Vulkan backend with SPIRV shaders
+	context->Device = SDL_CreateGPUDevice(
+		SDL_GPU_SHADERFORMAT_SPIRV,
+		true,
+		"vulkan");
+#endif
 
 	if (context->Device == NULL)
 	{
@@ -78,17 +93,18 @@ SDL_GPUShader* LoadShader(
 	SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
 	const char *entrypoint;
 
-	if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
-		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/SPIRV/%s.spv", BasePath, shaderFilename);
-		format = SDL_GPU_SHADERFORMAT_SPIRV;
+	// Prefer DXIL for D3D12, MSL for Metal, SPIRV for Vulkan
+	if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
+		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/DXIL/%s.dxil", BasePath, shaderFilename);
+		format = SDL_GPU_SHADERFORMAT_DXIL;
 		entrypoint = "main";
 	} else if (backendFormats & SDL_GPU_SHADERFORMAT_MSL) {
 		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/MSL/%s.msl", BasePath, shaderFilename);
 		format = SDL_GPU_SHADERFORMAT_MSL;
 		entrypoint = "main0";
-	} else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
-		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/DXIL/%s.dxil", BasePath, shaderFilename);
-		format = SDL_GPU_SHADERFORMAT_DXIL;
+	} else if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
+		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/SPIRV/%s.spv", BasePath, shaderFilename);
+		format = SDL_GPU_SHADERFORMAT_SPIRV;
 		entrypoint = "main";
 	} else {
 		SDL_Log("%s", "Unrecognized backend shader format!");
@@ -136,17 +152,18 @@ SDL_GPUComputePipeline* CreateComputePipelineFromShader(
 	SDL_GPUShaderFormat format = SDL_GPU_SHADERFORMAT_INVALID;
 	const char *entrypoint;
 
-	if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
-		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/SPIRV/%s.spv", BasePath, shaderFilename);
-		format = SDL_GPU_SHADERFORMAT_SPIRV;
+	// Prefer DXIL for D3D12, MSL for Metal, SPIRV for Vulkan
+	if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
+		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/DXIL/%s.dxil", BasePath, shaderFilename);
+		format = SDL_GPU_SHADERFORMAT_DXIL;
 		entrypoint = "main";
 	} else if (backendFormats & SDL_GPU_SHADERFORMAT_MSL) {
 		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/MSL/%s.msl", BasePath, shaderFilename);
 		format = SDL_GPU_SHADERFORMAT_MSL;
 		entrypoint = "main0";
-	} else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
-		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/DXIL/%s.dxil", BasePath, shaderFilename);
-		format = SDL_GPU_SHADERFORMAT_DXIL;
+	} else if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
+		SDL_snprintf(fullPath, sizeof(fullPath), "%sContent/Shaders/Compiled/SPIRV/%s.spv", BasePath, shaderFilename);
+		format = SDL_GPU_SHADERFORMAT_SPIRV;
 		entrypoint = "main";
 	} else {
 		SDL_Log("%s", "Unrecognized backend shader format!");

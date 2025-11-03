@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Ondřej Čertík <ondrej@certik.us>"]
+channels = ["https://prefix.dev/sdl", "conda-forge"]
+name = "SDL_gpu_examples"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+build = "rm -rf build2 && mkdir -p build2 && cd build2 && cmake -G Ninja .. && ninja"
+
+[dependencies]
+sdl3 = ">=3.2.26,<4"
+ninja = ">=1.13.1,<2"

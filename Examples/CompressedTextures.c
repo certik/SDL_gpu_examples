@@ -64,7 +64,7 @@ static const char* TextureNames[BC_IMAGE_COUNT + ASTC_IMAGE_COUNT] =
 	"astc/8x6.astc",
 	"astc/8x8.astc",
 	"astc/10x5.astc",
-	"astc/10x6.astc",
+	//"astc/10x6.astc",
 	"astc/10x8.astc",
 	"astc/10x10.astc",
 	"astc/12x10.astc",

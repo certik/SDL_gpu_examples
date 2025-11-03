@@ -6,7 +6,7 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-build = "rm -rf build2 && mkdir -p build2 && cd build2 && cmake -G Ninja .. && ninja"
+build = "rm -rf build && mkdir build && cd build && cmake -G Ninja .. && ninja"
 
 [dependencies]
 sdl3 = ">=3.2.26,<4"

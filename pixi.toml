@@ -11,3 +11,4 @@ build = "rm -rf build && mkdir build && cd build && cmake -G Ninja .. && ninja"
 [dependencies]
 sdl3 = ">=3.2.26,<4"
 ninja = ">=1.13.1,<2"
+cmake = ">=4.1.2,<5"

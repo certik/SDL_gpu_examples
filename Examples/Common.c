@@ -35,6 +35,15 @@ int CommonInit(Context* context, SDL_WindowFlags windowFlags)
 		return -1;
 	}
 
+	// Log which backend was selected
+#ifdef _WIN32
+	SDL_Log("Using Direct3D 12 backend with DXIL shaders");
+#elif defined(__APPLE__)
+	SDL_Log("Using Metal backend with MSL shaders");
+#else
+	SDL_Log("Using Vulkan backend with SPIRV shaders");
+#endif
+
 	context->Window = SDL_CreateWindow(context->ExampleName, 640, 480, windowFlags);
 	if (context->Window == NULL)
 	{

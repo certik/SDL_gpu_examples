@@ -2,7 +2,7 @@
 authors = ["Ondřej Čertík <ondrej@certik.us>"]
 channels = ["https://prefix.dev/sdl", "conda-forge"]
 name = "SDL_gpu_examples"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64", "linux-64", "win-64"]
 version = "0.1.0"
 
 [tasks]
